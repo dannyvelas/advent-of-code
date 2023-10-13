@@ -2,18 +2,19 @@
   (:require [clojure.java.io :as io]
             [clojure.string :as str]))
 
-(def crate-str-len 4)
+(def crate-str-len 3)
 
 (defn map-vals [f m]
   (into {} (for [[k v] m] [k (f v)])))
 
 (defn init-vec-of-stacks [stacks-section]
   (let [strings (drop-last (str/split stacks-section #"\n"))
-        col-groups (mapv #(->> (partition crate-str-len %)
+        col-groups (mapv #(->> (partition crate-str-len (inc crate-str-len) %) ;; step is crate-str-len+1 because there is an empty space between rows
                                (map (fn [col] (nth col 1)))) strings)
         amt-rows (count col-groups)
-        vec-of-stacks (partition amt-rows (apply interleave col-groups))]
-    (mapv #(filter (partial not= \space) %) vec-of-stacks)))
+        vec-of-stacks (partition amt-rows (apply interleave col-groups))
+        rm'd-spaces (mapv #(filter (partial not= \space) %) vec-of-stacks)]
+    rm'd-spaces))
 
 (defn init-cmd-vec [cmd-section]
   (let [split-by-nl (str/split cmd-section #"\n")
