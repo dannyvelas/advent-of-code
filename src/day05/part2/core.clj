@@ -47,9 +47,8 @@
   (let [file-content (slurp (io/resource "05-crates.txt"))
         [stacks-section cmd-section] (str/split file-content #"\n\n")
         stack-vec (init-vec-of-stacks stacks-section)
-        ;;cmds (init-cmd-vec cmd-section)
-        ;;stack-vec-result (exec-cmds stack-vec cmds)
-        ;;top-crates (map first stack-vec-result)
-        ;;concatted (apply str top-crates)
-        ]
-    stack-vec))
+        cmds (init-cmd-vec cmd-section)
+        stack-vec-result (exec-cmds stack-vec cmds)
+        top-crates (map first stack-vec-result)
+        concatted (apply str top-crates)]
+    concatted))
