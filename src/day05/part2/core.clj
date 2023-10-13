@@ -13,7 +13,7 @@
                                (map (fn [col] (nth col 1)))) strings)
         amt-rows (count col-groups)
         vec-of-stacks (partition amt-rows (apply interleave col-groups))]
-    vec-of-stacks))
+    (mapv #(filter (partial not= \space) %) vec-of-stacks)))
 
 (defn init-cmd-vec [cmd-section]
   (let [split-by-nl (str/split cmd-section #"\n")
