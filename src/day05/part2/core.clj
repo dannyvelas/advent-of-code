@@ -9,10 +9,10 @@
 
 (defn init-vec-of-stacks [stacks-section]
   (let [strings (drop-last (str/split stacks-section #"\n"))
-        col-groups (mapv #(->> (partition crate-str-len (inc crate-str-len) %) ;; step is crate-str-len+1 because there is an empty space between rows
-                               (map (fn [col] (nth col 1)))) strings)
-        amt-rows (count col-groups)
-        vec-of-stacks (partition amt-rows (apply interleave col-groups))
+        char-matrix (mapv #(->> (partition crate-str-len (inc crate-str-len) %) ;; step is crate-str-len+1 because there is an empty space between rows
+                                (map (fn [col] (nth col 1)))) strings)
+        amt-rows (count char-matrix)
+        vec-of-stacks (partition amt-rows (apply interleave char-matrix))
         rm'd-spaces (mapv #(filter (partial not= \space) %) vec-of-stacks)]
     rm'd-spaces))
 
@@ -47,8 +47,9 @@
   (let [file-content (slurp (io/resource "05-crates.txt"))
         [stacks-section cmd-section] (str/split file-content #"\n\n")
         stack-vec (init-vec-of-stacks stacks-section)
-        cmds (init-cmd-vec cmd-section)
-        stack-vec-result (exec-cmds stack-vec cmds)
-        top-crates (map first stack-vec-result)
-        concatted (apply str top-crates)]
-    concatted))
+        ;;cmds (init-cmd-vec cmd-section)
+        ;;stack-vec-result (exec-cmds stack-vec cmds)
+        ;;top-crates (map first stack-vec-result)
+        ;;concatted (apply str top-crates)
+        ]
+    stack-vec))
