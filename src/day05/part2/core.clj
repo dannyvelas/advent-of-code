@@ -14,9 +14,10 @@
 (defn init-vec-of-stacks [stacks-section]
   (let [amt-stacks (calc-amt-stacks stacks-section)
         strings (drop-last (str/split stacks-section #"\n"))
-        col-groups (mapv #(partition crate-str-len %) strings)
-        trimmed-col-groups (mapv #(map (fn [col-group] (nth col-group 1)) %) col-groups)]
-    trimmed-col-groups))
+        col-groups (mapv (fn [string]
+                           (let [cols-of-one-row (partition crate-str-len string)
+                                 trimmed-col-group (map (fn [col] (nth col 1)) cols-of-one-row)] trimmed-col-group)) strings)]
+    col-groups))
 
 (defn init-cmd-vec [cmd-section]
   (let [split-by-nl (str/split cmd-section #"\n")
