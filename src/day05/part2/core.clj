@@ -7,13 +7,8 @@
 (defn map-vals [f m]
   (into {} (for [[k v] m] [k (f v)])))
 
-(defn calc-amt-stacks [stacks-section]
-  (let [single-line (get (str/split stacks-section #"\n") 0)]
-    (int (Math/ceil (/ (count single-line) crate-str-len)))))
-
 (defn init-vec-of-stacks [stacks-section]
-  (let [amt-cols (calc-amt-stacks stacks-section)
-        strings (drop-last (str/split stacks-section #"\n"))
+  (let [strings (drop-last (str/split stacks-section #"\n"))
         col-groups (mapv #(->> (partition crate-str-len %)
                                (map (fn [col] (nth col 1)))) strings)
         amt-rows (count col-groups)
