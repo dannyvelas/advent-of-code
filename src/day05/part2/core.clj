@@ -12,12 +12,13 @@
     (int (Math/ceil (/ (count single-line) crate-str-len)))))
 
 (defn init-vec-of-stacks [stacks-section]
-  (let [amt-stacks (calc-amt-stacks stacks-section)
+  (let [amt-cols (calc-amt-stacks stacks-section)
         strings (drop-last (str/split stacks-section #"\n"))
-        col-groups (mapv (fn [string]
-                           (let [cols-of-one-row (partition crate-str-len string)
-                                 trimmed-col-group (map (fn [col] (nth col 1)) cols-of-one-row)] trimmed-col-group)) strings)]
-    col-groups))
+        col-groups (mapv #(->> (partition crate-str-len %)
+                               (map (fn [col] (nth col 1)))) strings)
+        amt-rows (count col-groups)
+        vec-of-stacks (partition amt-rows (apply interleave col-groups))]
+    vec-of-stacks))
 
 (defn init-cmd-vec [cmd-section]
   (let [split-by-nl (str/split cmd-section #"\n")
