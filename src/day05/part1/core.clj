@@ -1,66 +1,20 @@
 (ns day05.part1.core
-  (:gen-class)
   (:require [clojure.java.io :as io]
-            [clojure.set :as set]
             [clojure.string :as str]))
 
-(def crate-str-len 4)
+(def crate-str-len 3)
 
 (defn map-vals [f m]
   (into {} (for [[k v] m] [k (f v)])))
 
-(defn vec-to-groups [-vec group-size]
-  (reduce-kv (fn [agg k v]
-               (let [group-i (quot k group-size)]
-                 (if-let [group-so-far (get agg group-i)]
-                   (assoc agg group-i (conj group-so-far v))
-                   (assoc agg group-i [v]))))
-             {}
-             -vec))
-
-(defn push-one-layer [stack-vec layer]
-  (vec (for [[i stack] (mapv vector (range 0 (count stack-vec)) stack-vec)]
-         (if-let [new-crate (get layer i)]
-           (conj stack new-crate)
-           stack))))
-
-(defn vec-diff [v1 v2]
-  (let [v1-set (set v1)
-        v2-set (set v2)]
-    (vec (set/difference v1-set v2-set))))
-
-(defn line-to-layer [line]
-  (let [as-char-vec (vec (char-array line))
-        separated-stacks (vec-to-groups as-char-vec crate-str-len)
-        alpha-chars-only (map-vals #(vec-diff % [\[ \space \]]) separated-stacks)
-        nonempty-vecs-only (into {} (filter #(seq (second %)) alpha-chars-only))
-        vals-as-chars (map-vals first nonempty-vecs-only)]
-    vals-as-chars))
-
-(defn stacks-section-to-layer-vec [stacks-section]
-  (let  [split-by-nl (str/split stacks-section #"\n")
-         rm-col-names (subvec split-by-nl 0 (dec (count split-by-nl)))
-         vec-of-maps (mapv line-to-layer rm-col-names)]
-    vec-of-maps))
-
-(defn calc-amt-stacks [stacks-section]
-  (let [single-line (get (str/split stacks-section #"\n") 0)]
-    (int (Math/ceil (/ (count single-line) crate-str-len)))))
-
-(defn push-all-layers [empty-stack-vec layers]
-  (loop [i 0 stack-vec empty-stack-vec]
-    (cond (< i (count layers))
-          (let [new-stack-vec (push-one-layer stack-vec (get layers i))]
-            (recur (inc i) new-stack-vec))
-          :else stack-vec)))
-
 (defn init-vec-of-stacks [stacks-section]
-  (let [amt-stacks (calc-amt-stacks stacks-section)
-        empty-stack-vec (vec (repeat amt-stacks '()))
-        layers (stacks-section-to-layer-vec stacks-section)
-        filled-stack-vec (push-all-layers empty-stack-vec layers)
-        stack-vec-correct-order (mapv reverse filled-stack-vec)]
-    stack-vec-correct-order))
+  (let [strings (drop-last (str/split stacks-section #"\n"))
+        col-groups (mapv #(->> (partition crate-str-len (inc crate-str-len) %) ;; step is crate-str-len+1 because there is an empty space between rows
+                               (map (fn [col] (nth col 1)))) strings)
+        amt-rows (count col-groups)
+        vec-of-stacks (partition amt-rows (apply interleave col-groups))
+        rm'd-spaces (mapv #(filter (partial not= \space) %) vec-of-stacks)]
+    rm'd-spaces))
 
 (defn init-cmd-vec [cmd-section]
   (let [split-by-nl (str/split cmd-section #"\n")
