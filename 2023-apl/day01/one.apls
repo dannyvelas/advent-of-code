@@ -1,0 +1,3 @@
+file ← ⎕NGET input.txt
+hi ← 2×3
+
