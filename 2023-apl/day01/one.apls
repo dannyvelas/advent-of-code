@@ -1,9 +1,17 @@
-file ← ⎕NGET input.txt
-hi ← 2×3
-
 ⍝ first attempt
-file ← ⊃⎕NGET '/Users/daniel/RemoteGit/advent-of-code/2023-apl/day01/input.txt'
+file ← ⊃⎕NGET 'input.txt'
 splitByNL ← (~file ∊ (⎕UCS 10))⊆file
 onlyNums ← {(⍵∊⎕D) / ⍵}¨splitByNL
 firstAndLast ← {(⊃⍵) ((≢⍵)⊃⍵)}¨onlyNums
 ans ← +⌿⍎¨firstAndLast
+
+⍝ second attempt
+file ← ⊃⎕NGET 'input.txt'
+splitByNL ← (~file ∊ (⎕UCS 10))⊆file
+onlyNums ← ~∘(¯1 ⎕C ⎕a)¨splitByNL
+firstAndLast ← {(⊃⍵) ((≢⍵)⊃⍵)}¨onlyNums
+ans ← +⌿⍎¨firstAndLast
+
+⍝ third attempt
+file ← ⊃⎕NGET 'input.txt'
+ans←+/⍎¨{(⊃⍵)((≢⍵)⊃⍵)}¨~∘(¯1 ⎕C ⎕A)¨(~(⎕UCS 10)∊⍨file)⊆file
