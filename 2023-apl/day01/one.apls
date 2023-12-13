@@ -23,4 +23,4 @@ ans ←+/{2⊃⎕vfi(⊃,⊃∘⌽)((⍵∊⎕d)/⍵)}¨file
 
 ⍝ fifth attempt (fourth attempt but using C combinator ⍨)
 file ← ⊃⎕NGET 'input.txt' 1
-⎕←+/{2⊃⎕vfi(⊃,⊃∘⌽)⍵/⍨⎕d∊⍨⍵}¨file
+ans ←+/{2⊃⎕vfi(⊃,⊃∘⌽)⍵/⍨⎕d∊⍨⍵}¨file
