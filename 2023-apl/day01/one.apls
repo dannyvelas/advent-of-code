@@ -10,8 +10,17 @@ file ← ⊃⎕NGET 'input.txt'
 splitByNL ← (~file ∊ (⎕UCS 10))⊆file
 onlyNums ← ~∘(¯1 ⎕C ⎕a)¨splitByNL
 firstAndLast ← {(⊃⍵) ((≢⍵)⊃⍵)}¨onlyNums
-ans ← +⌿⍎¨firstAndLast
+ans ← +/⍎¨firstAndLast
 
 ⍝ third attempt
 file ← ⊃⎕NGET 'input.txt'
 ans←+/⍎¨{(⊃⍵)((≢⍵)⊃⍵)}¨~∘(¯1 ⎕C ⎕A)¨(~(⎕UCS 10)∊⍨file)⊆file
+
+
+⍝ fourth attempt (learned from kspalaiologos approach)
+file ← ⊃⎕NGET 'input.txt' 1
+ans ←+/{2⊃⎕vfi(⊃,⊃∘⌽)((⍵∊⎕d)/⍵)}¨file
+
+⍝ fifth attempt (fourth attempt but using C combinator ⍨)
+file ← ⊃⎕NGET 'input.txt' 1
+⎕←+/{2⊃⎕vfi(⊃,⊃∘⌽)⍵/⍨⎕d∊⍨⍵}¨file
