@@ -1,0 +1,68 @@
+psuedocode:
+
+* procedural
+  * initialize a variable `count` to 0
+  * split each line into an array.
+    * the first member of the array should be "Game n"
+    * every non-first member of the array should be a set of shown cubes, something like  "n red, m blue, k green", where `n`, `m`, and `k` are numbers
+  * iterate through every member of the array after the first and find:
+    * r = the largest number of shown cubes for red
+    * g = the largest number of shown cubes for green
+    * b = the largest number of shown cubes for blue
+  * determine if r > 12, g > 13, or if b > 14. if yes then skip
+  * otherwise add the gameID to `count`
+  * print the count at the end
+
+* create array where each element is a line
+* create a function `fn` that takes a line as input. The function will:
+  * split the line into an array.
+    * the first member of the array should be "Game n"
+    * every non-first member of the array should be a set of shown cubes, something like  "r red, g green, b blue", where `r`, `g`, and `b` are numbers
+  * parse the first member to be a number `n`
+  * parse each non-first member so as to convert it to an array of three elements: [r, g, b]
+  * our current array looks like this [n, [r, g, b], [r, g, b], [r, g, b]].
+  * transform the vectors to be a matrix so that we have this:
+  ```
+  |------------------|
+  | n, |-----------| |
+  |    | r   g   b | |
+  |    | r   g   b | |
+  |    | r   g   b | |
+  |    |-----------| |
+  |------------------|
+
+  ```
+  * get max of every column of the matrix so that we have this (where R, G, B is the max of a col)
+  ```
+  |------------------|
+  | n, |-----------| |
+  |    | R   G   B | |
+  |    |-----------| |
+  |------------------|
+
+  ```
+  * subtract the second element of the array by [12 13 14]
+  * if any of the elements of the array are smaller than 0, then return 0, otherwise, return `n`
+* map each element through `fn` to create a new array
+* sum up all the elements of this new array
+
+⍝ partition by ':' and ';'
+line⊆⍨~line ∊ ':' ';'
+
+⍝ 1. keep only numbers in the first element
+(({⍵/⍨⍵∊⎕d}⊃),1∘↓)line⊆⍨~line ∊ ':' ';'
+
+⍝ 2. split all the draws from non-first elements
+{⍵⊆⍨~', '⍷⍵}¨1∘↓line⊆⍨~line ∊ ':' ';'
+
+⍝ combined 1 and 2 
+(({⍵/⍨⍵∊⎕d}⊃),({⍵⊆⍨~', '⍷⍵}¨1∘↓))line⊆⍨~line ∊ ':' ';'
+
+(({⍵/⍨⍵∊⎕d}⊃),({{⍵⊆⍨~' '∊⍨⍵}¨⍵⊆⍨~', '⍷⍵}¨1∘↓))line⊆⍨~line ∊ ':' ';'
+
+
+{⍵⊆⍨~⊃+⌿(2 1 ⍴ ', ' '; ') ⍷ ¨⊂⍵}⊃1∘↓line⊆⍨~line ∊ ':'
+
+a ← {⍵⊆⍨~⍵ ∊ ' '}¨{⍵⊆⍨~⊃+⌿(2 1 ⍴ ', ' '; ') ⍷ ¨⊂⍵}⊃1∘↓line⊆⍨~line ∊ ':'
+m ← (2⊃¨a) {⍺ (⊃¨⍵)}⌸ a
+sortedM ← (⊂⍋m[; 1])⌷m
