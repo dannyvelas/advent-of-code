@@ -25,6 +25,5 @@ file ← ⊃⎕NGET 'input.txt' 1
      isPossible←0≤⌊/14 13 12-⌈⌿nums
  
   ⍝ if variable was 1 return gameID. if variable was 0 return 0
-     isPossible:gameID
-     0
+     isPossible×gameID
 }¨file
