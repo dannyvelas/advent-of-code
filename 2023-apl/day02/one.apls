@@ -63,17 +63,49 @@ line⊆⍨~line ∊ ':' ';'
 
 {⍵⊆⍨~⊃+⌿(2 1 ⍴ ', ' '; ') ⍷ ¨⊂⍵}⊃1∘↓line⊆⍨~line ∊ ':'
 
-a ← {⍵⊆⍨~⍵ ∊ ' '}¨{⍵⊆⍨~⊃+⌿(2 1 ⍴ ', ' '; ') ⍷ ¨⊂⍵}⊃1∘↓line⊆⍨~line ∊ ':'
-m ← (2⊃¨a) {⍺ (⊃¨⍵)}⌸ a
-sortedM ← (⊂⍋m[; 1])⌷m
-colorsPresent ← ('blue' 'green' 'red') ∊ (⊃¨sortedM[; 1]) 
-nums ← ⍉↑⍎¨¨sortedM[; 2]
-fn ← {
+
+
+⍝ final attempt
+calcRotation ← {
+   3≡≢⍵~0:0
    2≡≢⍵~0:⊃1-⍨⍸⌽~⍵
    ⊃⍸⌽⍵
 }
-addedzeroes ← (fn colorsPresent) ⌽ (⊃(⍴ nums)) 3 ↑ nums
-isPossible ← 0≤⌊/12 13 14 - ⌈⌿addedzeroes
+getNumber ← {
+  splitLine ← line⊆⍨~line ∊ ':'
+
+  ⍝ first part of a line is a gameID, parse it into int and save
+  gameID ← ⍎⊃{⍵/⍨⎕d∊⍨⍵}⊃splitLine
+
+  ⍝ convert second part of line to an array of arrays. each inner array is two elements: a number and a color
+  sndPart ← {⍵⊆⍨~⍵ ∊ ' '}¨{⍵⊆⍨~⊃+⌿(2 1 ⍴ ', ' '; ') ⍷ ¨⊂⍵}⊃1↓splitLine 
+
+  ⍝ create a 3x2 matrix. 1st column is color names. 2nd column are the drawings of that color
+  m ← (2⊃¨sndPart) {⍺ (⊃¨⍵)}⌸ sndPart
+
+  ⍝ sort matrix above by sorting the values of the first column
+  sortedM ← (⊂⍋m[; 1])⌷m
+
+  ⍝ 1 1 1 means all colors present, 1 1 0 means blue and green present, red missing. and so on.
+  colorsPresent ← ('blue' 'green' 'red') ∊ (⊃¨sortedM[; 1]) 
+
+  ⍝ convert sortedMatrix to a matrix of only numbers. no color information.
+  ⍝ also, transpose so that now each column corresponds to one color. before, each row corresponded to a color
+  nums ← ⍉↑⍎¨¨sortedM[; 2]
+
+  ⍝ in our final matrix, the first column should correspond to blue, the second one, green, and the last one red
+  ⍝ in the case that there is a color missing, make sure that its column is just all 0s
+  addedZeroes ← (calcRotation colorsPresent) ⌽ (⊃(⍴ nums)) 3 ↑ nums
+
+  ⍝ convert matrix above to be a vector, each element will be the max of its column
+  ⍝ create new vector by subtracting 14 from first col (blue), 13 from second column (green), and 12 from last column (red)
+  ⍝ get minimum of new vector. set variable to 1 if the minimum is greater than or equal to 0. or 0 if minimum is smaller than 0
+  isPossible ← 0≤⌊/14 13 12 - ⌈⌿addedZeroes
+
+  ⍝ if variable was 1 return gameID. if variable was 0 return 0
+  isPossible:gameID
+  0
+}
 
 1 -->  000000000 , nums[; 1] , nums[; 2]
 2 -->  nums[; 1] , 000000000 , nums[; 2]
