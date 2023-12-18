@@ -1,5 +1,4 @@
 #! /usr/local/bin/dyalogscript
-⍝ final attempt
 file ← ⊃⎕NGET 'input.txt' 1
 +/{
   splitLine←⍵⊆⍨~⍵∊':'
