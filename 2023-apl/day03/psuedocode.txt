@@ -1,0 +1,122 @@
+* procedural
+  * approach 1
+    * create 3d map m. x=lineNum, y=colNum, z=value
+    * iterate through input
+      * skip dots and special chars
+      * every time you see a number, save into a 3d map
+        * x: line
+        * y: column
+        * z: value
+    * iterate through input again
+      * every time you see a special character at line `i`, column `j`, check the 3d map for the following:
+        * numbers in the row above the special char
+          * map[i-1][j-1]
+          * map[i-1][j]
+          * map[i-1][j+1]
+        * numbers in the row next to the special char
+          * map[i][j-1]
+          * map[i][j+1]
+        * numbers in the row below the special char
+          * map[i+1][j-1]
+          * map[i+1][j]
+          * map[i+1][j+1]
+      * for all of the map queries above that return a non-null number, set m[a,b] to that number (where a,b) is the index of where you found a non-null number
+    * sum master list
+  * approach 2:
+    * the same as appraoch one, except iterate through input and collect special symbols into a 3d map
+    * iterate through input again, and when you see a number check the map at m[i-1][j-1]...m[i+1][j+1] for special symbols
+    * if a symbol comes up at least once, then add current number to master list
+    * sum master list
+  * approach 3:
+    * define empty number list, call it master list
+    * read first line
+      * define new map called `currLine`
+      * every time you encounter a special char,
+        * if prevLine is not empty (which it is) and prevLine[i-1][j-1], prevLine[i-1][j], prevLine[i-1][j+1] are numbers:
+            * then add them to master list
+        * set currLine[1][j] to special char
+      * every time you encounter a number
+        * if prevline is not empty (which it is) and prevLine[i-1][j-1], prevLine[i-1][j], prevLine[i-1][j+1] are special chars:
+          * add that number to master list.
+        * else if character before or right after is special char
+          * add that number to master list
+        * else:
+          * set currLine[1][j] = number
+    * set prevLine=currLine
+    * read second line,
+      * define new map called `currLine`
+      * every time you encounter a special char,
+        * if prevLine is not empty (which it is not) and prevLine[i-1][j-1], prevLine[i-1][j], prevLine[i-1][j+1] are numbers:
+            * then add them to master list
+        * set currLine[1][j] to special char
+      * every time you encounter a number
+        * if prevline is not empty (which it is not) and prevLine[i-1][j-1], prevLine[i-1][j], prevLine[i-1][j+1] are special chars:
+          * add that number to master list.
+        * else if character before or right after is special char
+          * add that number to master list
+        * else:
+          * set currLine[1][j] = number
+    * set prevLine=currLine
+    * do the same until you read all lines
+    * sum masterList
+ 1    2
+ -------------
+1|   |    |   |
+ -------------
+2|   | 12 |   | 
+ -------------
+3|   |    |   |
+ -------------
+
+ 1    2
+ -------------
+1| 0 | 0  | 0 |
+ -------------
+2| 0 | 0  | 0 | 
+ -------------
+3| 0 | 0  | 0 |
+ -------------
+
+-------------
+| * |    |   |
+-------------
+|   | 12 |   |
+-------------
+|   |    |   |
+
+ 1    2
+ -------------
+1| 0 | 0  | 0 |
+ -------------
+2| 0 | 1  | 0 | 
+ -------------
+3| 0 | 0  | 0 |
+
+-------------
+| * |    |   |
+-------------
+|   | 12 |   |
+-------------
+|   |    | # |
+
+* functional
+  * read file into 3d matrix, `mat` of size `m` columns and `n` rows
+  * create another matrix of the same dimensions and size, b
+    * b[i,j] will be 0 if m[i,j] is a period or the middle or end index of a number
+    * b[i,j] will be 1 if m[i,j] is the start index of a number
+    * b[i,j] will be 2 if m[i,j] is a special character
+  ✓ create a function `getBoxIndices` that will take two inputs: i and j. it will return a vector of two element vectors
+    * [ [i-1, j-1] [i-1, j] [i-1, j+1] [i, j-1] [i, j+1] [i+1, j-1] [i+1, j] [i+1, j+1] ]
+    * the vector that this function returns must only have elements that are a pair of positive numbers.
+  ✓ create an `m`x`n` matrix `indicies` where each element is a two element vector, [i,j].
+    * The `i` value will be the row of the element. the `j` value will be the column of the element
+  ✓ pass each element of `indices` to `getBoxIndices`. result will be called `boxIndices`
+  ✓ create a function `indexVec` that will take an vector of two element vectors, i,j. and
+    * return a vector of the same length where each element is `b[i,j]`
+  * for each element of `boxIndices`, pass it to `indexVec`. result will be called `boxValues`
+    * in essence, `boxValues` is an `m`x`n` matrix where each element is a vector that only has values 0, 1 or 2
+  * for each vector element `v` of `boxValues`, make it be a 0 if there are no 2s in `v`. make it be a 1 if there is at least one `2` in v, call it `symbolM`
+  * for each element of `boxValues` at index i,j, make it be a 0 if `mat[i,j]` is not a number
+  * create array that is `b`, except if `m[i,j]` is a special character, that will also be 0, call it `nums`
+  * multiply `nums` and `boxValues`  together, call it `numsNextToSpecialChars`
+  * sum all elements in `numsNextToSpecialChars`
