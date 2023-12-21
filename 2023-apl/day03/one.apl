@@ -1,6 +1,4 @@
 #! /usr/local/bin/dyalogscript
-file ← ⊃⎕NGET 'input.txt' 1
-
 getBoxIndices ← {
   bI ← ((⍺-1) (⍵-1)) ((⍺-1) ⍵) ((⍺-1) (⍵+1)) (⍺ (⍵-1)) (⍺ (⍵+1)) ((⍺+1) (⍵-1)) ((⍺+1) ⍵) ((⍺+1) (⍵+1))
   filteredOutLessThan1 ← bI[⍸{∧/1≤⍵}¨bI]
@@ -8,6 +6,7 @@ getBoxIndices ← {
 }
 
 ⍝ part1, define `b`
+file ← ⊃⎕NGET 'input.txt' 1
 ↑{
   amtCols ← 2⊃⍴↑file
   isNum ← +⌿↑⎕d ⍷ ¨⊂⍵
