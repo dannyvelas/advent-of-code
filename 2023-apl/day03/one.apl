@@ -5,18 +5,19 @@ getBoxIndices ← {
   filteredOutLessThan1
 }
 
-⍝ part1, define `b`
-file ← ⊃⎕NGET 'input.txt' 1
-↑{
-  amtCols ← 2⊃⍴↑file
+mergeNumsIntoOneIndex ← {
   isNum ← +⌿↑⎕d ⍷ ¨⊂⍵
   onlyNums ← ⍎¨isNum⊆⍵
-  indicesOfStartOfNums ← ⊃¨isNum⊆(⍳≢isNum) × isNum
-  isStartOfNum ← (⍳amtCols) ∊ indicesOfStartOfNums
-  nums ← amtCols ⍴ 0
+  indicesOfStartOfNums ← ⊃¨isNum⊆(⍳≢⍵) × isNum
+  isStartOfNum ← (⍳≢⍵) ∊ indicesOfStartOfNums
+  nums ← (≢⍵) ⍴ 0
   (isStartOfNum/nums) ← onlyNums
   nums
-}¨file
+}
+
+⍝ part1, define `b`
+file ← ⊃⎕NGET 'input.txt' 1
+↑mergeNumsIntoOneIndex¨file
 
 ⍝ part 2
 ⍝indices ← ⍳⍴↑file
