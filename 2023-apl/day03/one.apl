@@ -1,8 +1,9 @@
 #! /usr/local/bin/dyalogscript
 getBoxIndices ← {
   bI ← ((⍺-1) (⍵-1)) ((⍺-1) ⍵) ((⍺-1) (⍵+1)) (⍺ (⍵-1)) (⍺ (⍵+1)) ((⍺+1) (⍵-1)) ((⍺+1) ⍵) ((⍺+1) (⍵+1))
-  filteredOutLessThan1 ← bI[⍸{∧/1≤⍵}¨bI]
-  filteredOutLessThan1
+  isInBound ← {(1≤⊃⍵) ∧ (3≥⊃⍵) ∧ (1≤⊃⌽⍵) ∧ (140≥⊃⌽⍵)}
+  boundedIndices ← bI[⍸isInBound¨bI]
+  boundedIndices
 }
 
 mergeNumsIntoOneIndex ← {
@@ -15,11 +16,11 @@ mergeNumsIntoOneIndex ← {
   nums
 }
 
-⍝ part1, define `b`
+⍝ part1, define `numsMatrix`
 file ← ⊃⎕NGET 'input.txt' 1
-↑mergeNumsIntoOneIndex¨file
+numsMatrix ← ↑mergeNumsIntoOneIndex¨file
 
 ⍝ part 2
-⍝indices ← ⍳⍴↑file
-⍝boxIndices ← {⊃getBoxIndices/⍵}¨indices
-⍝{{b[⍺; ⍵]}/⍵}¨¨boxIndices
+indices ← ⍳⍴↑file
+boxIndices ← {⊃getBoxIndices/⍵}¨indices
+{numsMatrix[⊃⍵; ⊃⌽⍵]}¨¨boxIndices
