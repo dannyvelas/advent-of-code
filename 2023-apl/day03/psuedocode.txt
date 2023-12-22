@@ -101,22 +101,25 @@
 
 * functional
   * read file into 3d matrix, `mat` of size `m` columns and `n` rows
-  * create another matrix of the same dimensions and size, b
+  ✓ create another matrix of the same dimensions and size, `numMatrix`
     * b[i,j] will be 0 if m[i,j] is a period or the middle or end index of a number
-    * b[i,j] will be 1 if m[i,j] is the start index of a number
-    * b[i,j] will be 2 if m[i,j] is a special character
+    * b[i,j] will be `e` if m[i,j] is the start index of number `e`
+    * b[i,j] will be ¯2 if m[i,j] is a special character
   ✓ create a function `getBoxIndices` that will take two inputs: i and j. it will return a vector of two element vectors
     * [ [i-1, j-1] [i-1, j] [i-1, j+1] [i, j-1] [i, j+1] [i+1, j-1] [i+1, j] [i+1, j+1] ]
     * the vector that this function returns must only have elements that are a pair of positive numbers.
-  ✓ create an `m`x`n` matrix `indicies` where each element is a two element vector, [i,j].
+  ✓ create an vector called `indicies` where each element is a two element vector, [i,j].
     * The `i` value will be the row of the element. the `j` value will be the column of the element
+    * the min value of `i` will be 0, the max value of `i` will be 3.
+    * the min value of `j` will be 0, the max value of `j` will be 140.
   ✓ pass each element of `indices` to `getBoxIndices`. result will be called `boxIndices`
+  * for each element of `boxIndices` at index i,j, make it be a 0 if `mat[i,j]` is not a number
   ✓ create a function `indexVec` that will take an vector of two element vectors, i,j. and
     * return a vector of the same length where each element is `b[i,j]`
-  * for each element of `boxIndices`, pass it to `indexVec`. result will be called `boxValues`
-    * in essence, `boxValues` is an `m`x`n` matrix where each element is a vector that only has values 0, 1 or 2
-  * for each vector element `v` of `boxValues`, make it be a 0 if there are no 2s in `v`. make it be a 1 if there is at least one `2` in v, call it `symbolM`
-  * for each element of `boxValues` at index i,j, make it be a 0 if `mat[i,j]` is not a number
+  ✓ for each element of `boxIndices`, pass it to `indexVec`. result will be called `boxValues`
+    * in essence, `boxValues` is an `m`x`n` matrix where each element is a vector that only has values 0, `e`, or ¯2
+  * for each vector element `v` of `boxValues`, make it be a 0 if there are no ¯2s in `v`.
+    * make it be a 1 if there is at least one `2` in v, call it `symbolM`
   * create array that is `b`, except if `m[i,j]` is a special character, that will also be 0, call it `nums`
   * multiply `nums` and `boxValues`  together, call it `numsNextToSpecialChars`
   * sum all elements in `numsNextToSpecialChars`

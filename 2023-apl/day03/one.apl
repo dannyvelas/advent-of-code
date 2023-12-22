@@ -22,35 +22,10 @@ file ← ⊃⎕NGET 'input.txt' 1
 numsMatrix ← ↑mergeNumsIntoOneIndex¨file
 
 ⍝ part 2
-indices ← ⊃,↓⍳⍴↑file
+indices ← ⊃,/↓⍳⍴↑file
 indicesOfNums ← indices/⍨0≠{numsMatrix[⊃⍵; ⊃⌽⍵]}¨indices
 boxIndices ← getBoxIndices¨indicesOfNums
 isInBound ← {(∧/1≤⍵)∧((⊃⍴numsMatrix)≥⊃⍵)∧((2⊃⍴numsMatrix)≥⊃⌽⍵)}
 boundedIndices ← {⍵[⍸isInBound¨⍵]}¨boxIndices
 indicesNextToSpecialChars ← indicesOfNums/⍨{∨/{¯2=numsMatrix[⊃⍵; ⊃⌽⍵]}¨⍵}¨boundedIndices
-+/{numsMatrix[⊃⍵; ⊃⌽⍵]}¨indicesNextToSpecialChars
-
-⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝ scratch work:: ⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝
-base ← ↑('.',⎕d) ⍷ ¨⊂line
-isSymbol ← ~+⌿base
-isNum ← +⌿1↓base
-encoded ← isNum + isSymbol×2
-
-
-
-
-⍝ first row: 1 if is a '.'
-⍝ second row: 1 if is a 0
-⍝ third row: 1 if is a 1
-⍝ ...
-⍝ 11th row: 1 if is a 9
-↑('.',⎕d) ⍷ ¨⊂line
-
-⍝-1 to 9 as 11x140 matrix: 
-⍉(≢line) 11 ⍴ ¯2+⍳11
-
-⍝ '.' = -1
-⍝ symbol = 0
-⍝ number = number itself
-encodedM ← +⌿(↑('.',⎕d) ⍷ ¨⊂line) × ⍉(≢line) 11 ⍴ ¯2+⍳11
-
+⎕ ← +/{numsMatrix[⊃⍵; ⊃⌽⍵]}¨indicesNextToSpecialChars
