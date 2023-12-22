@@ -22,14 +22,11 @@ file ← ⊃⎕NGET 'input.txt' 1
 numsMatrix ← ↑mergeNumsIntoOneIndex¨file
 
 ⍝ part 2
-indices ← ⍳⍴↑file
-boxIndices ← getBoxIndices¨indices
-isInBound ← {(∧/1≤⍵)∧((⊃⍴numsMatrix)≥⊃⍵)∧((2⊃⍴numsMatrix)≥⊃⌽⍵)}
-boundedIndices ← {⍵[⍸isInBound¨⍵]}¨boxIndices
-
-
-{numsMatrix[⊃⍵; ⊃⌽⍵]}¨¨boundedIndices
-
+indices ← ⊃,↓⍳⍴↑file
+indicesOfNums ← indices/⍨0≠{numsMatrix[⊃⍵; ⊃⌽⍵]}¨indices
+boxIndices ← ⊃,/getBoxIndices¨indicesOfNums
+boundedIndices ← boxIndices/⍨{(∧/1≤⍵)∧((⊃⍴numsMatrix)≥⊃⍵)∧((2⊃⍴numsMatrix)≥⊃⌽⍵)}¨boxIndices
+indicesWithSpecialChars ← boundedIndices/⍨¯2={numsMatrix[⊃⍵; ⊃⌽⍵]}¨boundedIndices
 
 ⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝ scratch work:: ⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝
 base ← ↑('.',⎕d) ⍷ ¨⊂line
