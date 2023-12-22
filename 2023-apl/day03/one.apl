@@ -23,7 +23,7 @@ numsMatrix ← ↑mergeNumsIntoOneIndex¨file
 
 ⍝ part 2
 indices ← ⊃,/↓⍳⍴↑file
-indicesOfNums ← indices/⍨0≠{numsMatrix[⊃⍵; ⊃⌽⍵]}¨indices
+indicesOfNums ← indices/⍨{{(¯2≠⍵)∧(0≠⍵)}numsMatrix[⊃⍵; ⊃⌽⍵]}¨indices
 boxIndices ← getBoxIndices¨indicesOfNums
 isInBound ← {(∧/1≤⍵)∧((⊃⍴numsMatrix)≥⊃⍵)∧((2⊃⍴numsMatrix)≥⊃⌽⍵)}
 boundedIndices ← {⍵[⍸isInBound¨⍵]}¨boxIndices
