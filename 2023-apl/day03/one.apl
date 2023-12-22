@@ -24,9 +24,11 @@ numsMatrix ← ↑mergeNumsIntoOneIndex¨file
 ⍝ part 2
 indices ← ⊃,↓⍳⍴↑file
 indicesOfNums ← indices/⍨0≠{numsMatrix[⊃⍵; ⊃⌽⍵]}¨indices
-boxIndices ← ⊃,/getBoxIndices¨indicesOfNums
-boundedIndices ← boxIndices/⍨{(∧/1≤⍵)∧((⊃⍴numsMatrix)≥⊃⍵)∧((2⊃⍴numsMatrix)≥⊃⌽⍵)}¨boxIndices
-indicesWithSpecialChars ← boundedIndices/⍨¯2={numsMatrix[⊃⍵; ⊃⌽⍵]}¨boundedIndices
+boxIndices ← getBoxIndices¨indicesOfNums
+isInBound ← {(∧/1≤⍵)∧((⊃⍴numsMatrix)≥⊃⍵)∧((2⊃⍴numsMatrix)≥⊃⌽⍵)}
+boundedIndices ← {⍵[⍸isInBound¨⍵]}¨boxIndices
+indicesNextToSpecialChars ← indicesOfNums/⍨{∨/{¯2=numsMatrix[⊃⍵; ⊃⌽⍵]}¨⍵}¨boundedIndices
++/{numsMatrix[⊃⍵; ⊃⌽⍵]}¨indicesNextToSpecialChars
 
 ⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝ scratch work:: ⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝
 base ← ↑('.',⎕d) ⍷ ¨⊂line
