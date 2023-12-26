@@ -1,15 +1,21 @@
 file←↑⊃⎕NGET'./input.txt'1
-splitIntoRows ← ↑('.',⎕d) ⍷ ¨⊂file
-encoded ← (+⌿splitIntoRows×⍉(2⊃⍴ file) (⊃⍴ file) 11 ⍴ 0,¯1+⍳10)+¯1×~+⌿splitIntoRows
-nums ← (0<,encoded)⊆,encoded
+encoded ← ¯1+(⎕d,'.')⍳l
+nums ← (10>,encoded)⊆,encoded
+mapped ← ∊{(≢⍵)⍴10⊥⍵}¨nums
+encoded[⍸10>encoded] ← mapped
 
-⍝ z[⍸0<z]←∊(≢⍴10∘⊥)¨¯1+(0<,z)⊆,z
 ⍝ file:    read file as matrix. suppose this matrix has m rows and n columns
-⍝ split:   create binary 3d matrix. this matrix will have 11 sides or faces. each side will
-⍝          be a 2d matrix of `m` rows and `n` columns.
-⍝          `[i,j]` of the matrix of the first face will be a 1 if `[i,j]` of file is period
-⍝          `[i,j]` of the matrix of the second face will be a 1 if `[i,j]` of file is 0
-⍝          `[i,j]` of the matrix of the third face will be a 1 if `[i,j]` of file is 1
-⍝          and so on. there are 11 faces because there are 10 numbers 0-9, plus the face for the period
-⍝ encoded: encode file into a matrix where 0 stands for a period, -1 stands for a symbol
-⍝          and `n` stands for the number `n` at that position
+⍝ encoded: encode file into a matrix where 10 stands for a period, 11 stands for a symbol
+⍝          and `n` stands for the number `n` (0-9) at that position
+⍝ nums:    an array of arrays. each inner array is a character of numbers
+⍝ mapped:  transform each element of nums `e` to an array that is `s` duplicates of `e`, where
+⍝          `s` is the amount of digits of `e`. once you're done, flatten. so instaed of an array
+⍝          of arrays, we will have an array of numbers
+⍝ encoded[⍸10>encoded]
+⍝          get all of the indices `i` of `encoded` that represent a number. (aka indices where e < 10).
+⍝          at the first such index, set mapped[1]. at the second such index, mapped[2], and so on.
+⍝          there should be an equal amount of such indices as length of mapped
+
+
+prettier ← (11|encoded) - 2×encoded∊12
+⍝ prettier: make 11s into 0s. make 
