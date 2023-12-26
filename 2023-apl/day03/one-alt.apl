@@ -1,7 +1,8 @@
 file←↑⊃⎕NGET'./input.txt'1
-encoded←(⎕d,'.')⍳l
+
+encoded←(⎕d,'.')⍳file
 prettier←(11|encoded) - 2×encoded∊12
-nums ← (0<,prettier)⊆,prettier
+nums ← ¯1+(0<,prettier)⊆,prettier
 mapped ← ∊{(≢⍵)⍴10⊥⍵}¨nums
 prettier[⍸0<prettier] ← mapped
 
@@ -14,7 +15,8 @@ prettier[⍸0<prettier] ← mapped
 ⍝           or being a period. this step may seem useless now, but will be useful in the future,
 ⍝           because in the future, our matrix will hold numbers that are greater than 10. so without
 ⍝           this step, there would be ambiguity as to whether an element is a true 11 or a period.
-⍝ nums:     an array of arrays. each inner array is a character of numbers
+⍝ nums:     an array of an array of numbers. after we created this array, we subtracted 1 from each
+⍝           number. (making it the true number from file, not n+1)
 ⍝ mapped:   transform each element of nums `e` to an array that is `s` duplicates of `e`, where
 ⍝           `s` is the amount of digits of `e`. once you're done, flatten. so instaed of an array
 ⍝           of arrays, we will have an array of numbers
