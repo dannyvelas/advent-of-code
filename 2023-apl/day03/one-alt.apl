@@ -22,7 +22,7 @@ prettier[⍸0<prettier] ← mapped
 ⍝           we subtracted 1 from each number. (making it the true number from file, not n+1)
 ⍝ mapped:   transform each element of nums `e` to its number `n`. So `[3,0,7]` would be `307`.
 ⍝           Next, transform `n` to an array that is `s` duplicates of `n`, where `s` is the amount
-⍝           of digits of `e`. once you're done, flatten. so instaed of an array of arrays, we will
+⍝           of digits of `e`. once you're done, flatten. so instead of an array of arrays, we will
 ⍝           have an array of numbers.
 ⍝ prettier[⍸0<prettier]
 ⍝          get all of the indices `i` of `prettier` that represent a number.
