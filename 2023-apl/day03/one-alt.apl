@@ -10,7 +10,7 @@ groupSizes ← ≢¨(,mask) ⊆ ⍳⍴(,mask)
 centerColsOnly ← (,mask)/,(({⊂⍵}⌺3 3)prettier)
 grouped ← (groupSizes / ⍳⍴groupSizes) ⊆ centerColsOnly 
 groupHasSpecialChar←{∨/¯1=∊⍵}¨grouped
-+/groupHasSpecialChar / parsedNums
++/groupHasSpecialChar / ({10⊥⍵}¨nums)
 
 
 ⍝ file:     read file as matrix. suppose this matrix has m rows and n columns
