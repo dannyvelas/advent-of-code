@@ -5,6 +5,13 @@ prettier←(11|encoded) - 2×encoded∊12
 nums ← ¯1+(0<,prettier)⊆,prettier
 mapped ← ∊{(≢⍵)⍴10⊥⍵}¨nums
 prettier[⍸0<prettier] ← mapped
+mask ← prettier>0
+groupSizes ← ≢¨(,mask) ⊆ ⍳⍴(,mask)
+centerColsOnly ← (,mask)/,(({⊂⍵}⌺3 3)prettier)
+grouped ← (groupSizes / ⍳⍴groupSizes) ⊆ centerColsOnly 
+groupHasSpecialChar←{∨/¯1=∊⍵}¨grouped
++/groupHasSpecialChar / parsedNums
+
 
 ⍝ file:     read file as matrix. suppose this matrix has m rows and n columns
 ⍝ encoded:  encode file into a matrix of type int where 11 stands for a period, 12 stands for a
@@ -22,7 +29,7 @@ prettier[⍸0<prettier] ← mapped
 ⍝           we subtracted 1 from each number. (making it the true number from file, not n+1)
 ⍝ mapped:   transform each element of nums `e` to its number `n`. So `[3,0,7]` would be `307`.
 ⍝           Next, transform `n` to an array that is `s` duplicates of `n`, where `s` is the amount
-⍝           of digits of `e`. once you're done, flatten. so instead of an array of arrays, we will
+⍝           of digits of `n`. once you're done, flatten. so instead of an array of arrays, we will
 ⍝           have an array of numbers.
 ⍝ prettier[⍸0<prettier]
 ⍝          get all of the indices `i` of `prettier` that represent a number.
