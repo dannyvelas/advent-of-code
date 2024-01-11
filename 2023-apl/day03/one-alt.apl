@@ -6,12 +6,10 @@ prettier←(11|encoded) - 2×encoded∊12
 nums ← ¯1+(0<,prettier)⊆,prettier
 mapped ← ∊{(≢⍵)⍴10⊥⍵}¨nums
 prettier[⍸0<prettier] ← mapped
-mask ← prettier>0
-groupSizes ← ≢¨(,mask) ⊆ ⍳⍴(,mask)
-centerColsOnly ← (,mask)/,(({⊂⍵}⌺3 3)prettier)
-grouped ← (groupSizes / ⍳⍴groupSizes) ⊆ centerColsOnly 
-groupHasSpecialChar←{∨/¯1=∊⍵}¨grouped
-⎕ ← +/groupHasSpecialChar / 10⊥¨nums
+flatMask ← ,prettier>0
+groupSizes ← ≢¨flatMask ⊆ ⍳⍴flatMask
+grouped ← (groupSizes / ⍳⍴groupSizes) ⊆ flatMask/,({⊂⍵}⌺3 3)prettier
+⎕ ← +/({∨/¯1=∊⍵}¨grouped) / 10⊥¨nums
 
 
 ⍝ file:     read file as matrix. suppose this matrix has m rows and n columns
