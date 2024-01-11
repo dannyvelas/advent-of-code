@@ -8,7 +8,7 @@ mapped ← ∊{(≢⍵)⍴10⊥⍵}¨nums
 prettier[⍸0<prettier] ← mapped
 flatMask ← ,prettier>0
 groupSizes ← ≢¨flatMask ⊆ ⍳⍴flatMask
-grouped ← (groupSizes / ⍳⍴groupSizes) ⊆ flatMask/,({⊂⍵}⌺3 3)prettier
+grouped ← (groupSizes / ⍳⍴groupSizes) ⊆ flatMask/,{⊂⍵}⌺3 3⊢prettier
 ⎕ ← +/({∨/¯1=∊⍵}¨grouped) / 10⊥¨nums
 
 
