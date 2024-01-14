@@ -2,5 +2,4 @@
 
 I←⌷⍨∘⊃⍨⍤0 99 ⍝ sane indexing
 file ← ⊃⎕NGET'input.txt' 1
-summed ← +/¨⍎¨¨((0≠≢¨)⊆⊢)file
-+/((3↑⍒)I⊢) summed
++/((3↑⍒)I⊢)+/¨⍎¨¨((0≠≢¨)⊆⊢)file
