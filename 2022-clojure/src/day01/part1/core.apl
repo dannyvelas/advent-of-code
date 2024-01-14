@@ -1,7 +1,7 @@
 #! /usr/local/bin/dyalogscript
 
 file ← ⊃⎕NGET'10.txt' 1
-⌈/+/¨⍎¨¨file ⊆⍨ (~{''≡⍵}¨file)
+⌈/+/¨⍎¨¨((0≠≢¨)⊆⊢)file
 
 ⍝ approach 1 of splitting file into vectors of numbers: file ⊆⍨ ~{''≡⍵}¨file
 ⍝ approach 2 of splitting file into vectors of numbers: (~''∘≡¨file) ⊆ file
