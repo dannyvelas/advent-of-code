@@ -3,23 +3,17 @@
 cat input.txt | jq -Rs '
   def is_safe:
     (if .[0] < .[1] then "increasing" else "decreasing" end) as $state
-    | reduce .[] as $el(
-        {prev: -1, result: true};
-        (($el - .prev) | abs) as $abs
-        | if .prev != -1 and ($abs < 1 or $abs > 3) then
-            .result = false
-          elif .prev != -1 and .result and $state == "increasing" and .prev > $el then
-            .result = false
-          elif .prev != -1 and .result and $state == "decreasing" and .prev < $el then
-            .result = false
-          else
-            .
-          end
-        | .prev = $el
-      )
-    | .result
+    | . as $arr
+    | [range(1; length) | $arr[.] - $arr[.-1]] 
+    | if ([.[] | select(. == 0 or abs > 3)] | length > 0) then
+        false
+      elif ([.[] | select(. < 0)] | length > 0) and ([.[] | select(. > 0)] | length > 0) then
+        false
+      else
+        true
+      end
   ;
-  
+
   .
   | split("\n")[:-1]
   | [ .[] | split(" ") | [.[] | tonumber] ]
