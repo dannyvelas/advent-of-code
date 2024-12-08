@@ -1,11 +1,5 @@
 #!/bin/bash
 
-#'
-#[2 2 2 2 2 1]
-#[2 2 1]
-#[1 2 1] => [1, -1]
-#'
-
 cat input.txt | jq -Rn '
   def is_safe:
     . as $arr
