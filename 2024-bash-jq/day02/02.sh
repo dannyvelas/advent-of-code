@@ -13,13 +13,18 @@ cat input.txt | jq -Rs '
     | ([$diffs[]|select(. > 0)]|length) as $amt_pos
     | ([$diffs[]|select(. < 0)]|length) as $amt_neg
     | (if $amt_pos >= $amt_neg then "pos" else "neg" end) as $state
-    | [$diffs[] | (. != 0 and abs <= 3 and ((. > 0 and $state == "pos") or (. < 0 and $state == "neg")))] as $level_results
-    | $level_results
-    #| (([$level_results[] | select(.|not)]|length) <= 1)
+    | [$diffs[] | select((. > 0 and $state == "pos") or (. < 0 and $state == "neg"))] as $goodsteps
+    | if (($goodsteps|length) < (($diffs|length)-1)) then
+        false
+      else
+        [range(1; $goodsteps|length) | $goodsteps[.] - $goodsteps[.-1]]
+        | ([.[] | select(abs > 3)] | length>0)
+      end
   ;
-  [1,2,7,8,9] | is_safe
-  #.
-  #| split("\n")[:-1]
-  #| [ .[] | split(" ") | [.[] | tonumber] ]
+  .
+  | split("\n")[:-1]
+  | [ .[] | split(" ") | [.[] | tonumber] ]
+  | .[]
+  | is_safe
   #| reduce .[] as $report(0; if ($report | is_safe) then .+1 else . end)
 '
