@@ -8,8 +8,5 @@ cat input.txt | jq -Rn --arg regex $regex '
     | add
   ;
   
-  reduce inputs as $report(
-    0; 
-    . + ($report | compute_line)
-  )
+  reduce inputs as $report(0; . + ($report | compute_line))
 '
