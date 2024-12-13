@@ -1,6 +1,6 @@
 import sys
 from collections import defaultdict
-from typing import List, Dict, Set
+from typing import List, Set
 
 graph = defaultdict(set)
 for line in sys.stdin:
@@ -9,14 +9,13 @@ for line in sys.stdin:
     graph[needed_after].add(needed_before)
 
 
-def sort(present: Set[str]) -> List[str]:
-    visited = set()
-    result = []
-
+def topo(present: Set[str]) -> List[str]:
+    visited: Set[str] = set()
+    result: List[str] = []
     def dfs(node: str):
         if node in visited: return
         visited.add(node)
-
+        
         for neighbor in graph[node]:
             if neighbor in present:
                 dfs(neighbor)
@@ -24,7 +23,8 @@ def sort(present: Set[str]) -> List[str]:
         result.append(node)
 
     for node in graph:
-        dfs(node)
+        if present:
+            dfs(node)
 
     return result
 
@@ -42,9 +42,8 @@ for line in lines:
             was_blacklisted = True
         blacklist.update(graph[num])
         present.add(num)
-    result = []
     if was_blacklisted:
-        result = sort(present)
+        result = topo(present)
         ans += int(result[len(result) // 2])
 
 print(ans)
