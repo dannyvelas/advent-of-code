@@ -9,16 +9,16 @@ def topo(present: Set[str]) -> List[str]:
     result: List[str] = []
     def dfs(node: str):
         if node in visited: return
+        if node not in present: return
         visited.add(node)
         
         for neighbor in graph[node]:
-            if neighbor in present:
-                dfs(neighbor)
+            dfs(neighbor)
 
         result.append(node)
 
     for node in graph:
-        if present:
+        if node in present:
             dfs(node)
 
     return result
