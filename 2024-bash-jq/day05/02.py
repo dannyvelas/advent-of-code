@@ -3,11 +3,6 @@ from collections import defaultdict
 from typing import List, Set
 
 graph = defaultdict(set)
-for line in sys.stdin:
-    if line == '\n': break
-    needed_before, needed_after = line[:-1].split('|')
-    graph[needed_after].add(needed_before)
-
 
 def topo(present: Set[str]) -> List[str]:
     visited: Set[str] = set()
@@ -27,6 +22,11 @@ def topo(present: Set[str]) -> List[str]:
             dfs(node)
 
     return result
+
+for line in sys.stdin:
+    if line == '\n': break
+    needed_before, needed_after = line[:-1].split('|')
+    graph[needed_after].add(needed_before)
 
 lines = []
 for line in sys.stdin:
