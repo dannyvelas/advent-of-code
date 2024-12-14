@@ -3,7 +3,6 @@ from typing import List
 
 def main():
     ans = 0
-    lineno = 1
     for line in sys.stdin:
         target, nums = line[:-1].split(': ')
         target = int(target)
@@ -13,7 +12,6 @@ def main():
 
         if isComputable(nums_a, target):
             ans += target
-        lineno += 1
 
     print(ans)
 
