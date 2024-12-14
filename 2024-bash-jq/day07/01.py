@@ -3,6 +3,7 @@ from typing import List
 
 def main():
     ans = 0
+    lineno = 1
     for line in sys.stdin:
         target, nums = line[:-1].split(': ')
         target = int(target)
@@ -12,6 +13,7 @@ def main():
 
         if isComputable(nums_a, target):
             ans += target
+        lineno += 1
 
     print(ans)
 
@@ -33,14 +35,13 @@ def compute(operands: List[int], operators: List[str]) -> int:
 
 def isComputable(operands: List[int], target: int):
     def helper(operators: List[str]):
-        amt_left = len(operands)-1 - len(operators)
+        amt_left = len(operands)-1 - len(operators) # 11 - 0
         if amt_left == 0:
             result = compute(operands, operators)
             return result == target
         
-        for _ in range(amt_left):
-            for op in ['*', '+']:
-                if helper(operators + [op]): return True
+        for op in ['*', '+']:
+            if helper(operators + [op]): return True
 
         return False
 
