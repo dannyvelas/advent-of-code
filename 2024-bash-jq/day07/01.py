@@ -33,8 +33,7 @@ def compute(operands: List[int], operators: List[str]) -> int:
 
 def isComputable(operands: List[int], target: int):
     def helper(operators: List[str]):
-        amt_left = len(operands)-1 - len(operators) # 11 - 0
-        if amt_left == 0:
+        if len(operands)-1 - len(operators) == 0:
             result = compute(operands, operators)
             return result == target
         
