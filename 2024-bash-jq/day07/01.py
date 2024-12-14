@@ -1,5 +1,6 @@
 import sys
 from typing import List
+import math
 
 def main():
     ans = 0
@@ -15,7 +16,6 @@ def main():
 
     print(ans)
 
-
 '''
 a b c d
 + * +
@@ -23,7 +23,10 @@ a b c d
 def compute(operands: List[int], operators: List[str]) -> int:
     def expr(left: int, op: str, right: int) -> int:
         if op == '*': return left*right
-        else: return left+right
+        elif op == '+': return left+right
+        else: # concat
+            amt_places = math.floor(math.log10(right))+1
+            return (left * (10 ** amt_places))+right
     
     prev = operands[0]
     for i in range(1, len(operands)):
@@ -37,7 +40,7 @@ def isComputable(operands: List[int], target: int):
             result = compute(operands, operators)
             return result == target
         
-        for op in ['*', '+']:
+        for op in ['*', '+', '||']:
             if helper(operators + [op]): return True
 
         return False
