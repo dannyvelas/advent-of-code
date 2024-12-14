@@ -1,0 +1,25 @@
+a * b * c * d (3*)
+
+a * b * c + d (2*)
+a * b + c * d (2*)
+a + b * c * d (2*)
+
+a + b + c * d (1*)
+a + b * c + d (1*)
+a * b + c + d (1*)
+
+a + b + c + d (0*)
+
+
+_ _ _ (* +) => 2 * 2 * 2
+
+* * * => get some result if result == target then return else continue
+
+
+def helper(spaces: List[str], i: int):
+  # calculate result of spaces 
+  # if result == target: return
+
+  prev, after = spaces[:i], spaces[i+1:]
+
+
