@@ -11,24 +11,20 @@ def main():
             else:
                 disk.append('.')
 
-    #print(''.join([str(x) for x in disk]))
     curr_file_id = None
     amt_els = None
     r = len(disk)-1
     target_file_id = None
     while target_file_id is None or target_file_id >= 0:
-        #print(target_file_id)
         # search from right to left for a fileid and the amount of elements that takes up
         while (target_file_id is not None and disk[r] != target_file_id) or (target_file_id is None and disk[r] == '.'):
             r -= 1
-        #print(f'\tr={r}')
         curr_file_id = disk[r]
         amt_els = 0
         i = r
         while disk[i] == curr_file_id:
             amt_els += 1
             i -= 1
-        #print(f'\tamt_els={amt_els}')
         l = 0
         amt_spaces = 0
         # search from left to right for an amt of spaces >= amt_els
@@ -43,7 +39,6 @@ def main():
             while disk[l] == '.':
                 amt_spaces += 1
                 l += 1
-            #print(f'\tamt_sp={amt_spaces}')
 
             if amt_spaces >= amt_els: break
 
