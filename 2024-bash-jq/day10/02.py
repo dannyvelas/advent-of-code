@@ -28,7 +28,7 @@ def main():
 
     def bfs(start_i: int, start_j: int, target: int) -> int:
         q = deque()
-        visited = set()
+        #visited = set()
 
         q.append((start_i, start_j))
         #visited.add((start_i, start_j))
@@ -40,7 +40,7 @@ def main():
                 amt_of_targets += 1
                 continue
             for ni, nj in graph[(pi,pj)]:
-                if (ni, nj) in visited: continue
+                #if (ni, nj) in visited: continue
                 q.append((ni,nj))
                 #visited.add((ni,nj))
         return amt_of_targets
