@@ -1,21 +1,12 @@
 import sys
-from typing import Tuple, Optional
+from typing import Tuple
 import math
 
-def split_num(num: int) -> Optional[Tuple[int, int]]:
-    left, right = 0, 0
-    num_digits = math.floor(math.log10(num))+1
-    if num_digits % 2 != 0: return None
-    for i in range(num_digits):
-        if i < num_digits // 2:
-            last_digit = num % 10
-            right = (last_digit * (10**i)) + right 
-            num //= 10
-        else:
-            last_digit = num % 10
-            left = (last_digit * (10**(i - (num_digits // 2)))) + left
-            num //= 10
-    return left, right
+def split_num(num: int) -> Tuple[int, int]:
+    divisor = 10
+    while num // divisor > divisor:
+        divisor *= 10
+    return num // divisor, num % divisor
 
 def main():
     line = sys.stdin.readline().strip().split(' ')
@@ -25,12 +16,11 @@ def main():
         for num in nums:
             if num == 0:
                 new_nums.append(1)
+            elif (math.floor(math.log10(num))+1) % 2 == 0:
+                l, r = split_num(num)
+                new_nums.extend([l, r])
             else:
-                split = split_num(num)
-                if split is not None:
-                    new_nums.extend([split[0], split[1]])
-                else:
-                    new_nums.append(num * 2024)
+                new_nums.append(num * 2024)
             nums = new_nums
 
     print(len(nums))
