@@ -13,7 +13,7 @@ def main():
     for num in line:
         int_num = int(num)
         nums[int_num] += 1
-    for _ in range(25):
+    for _ in range(75):
         new_nums = defaultdict(int)
         for num, count in nums.items():
             if num == 0:
